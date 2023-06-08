@@ -50,5 +50,35 @@ class Population:
             selection.append(population[index])
         self.population = selection
     
+    def crossbreeding(self) -> list:
+        crossbreeding = []
+        population = self.population
+        
+        def takes_half(path):
+            half_path = []
+            for i in range(0, len(path) //2):
+                half_path.append(path[i])
+            return half_path
+
+        for _ in range(2):
+            new_path = []
+            for path in population:
+                indexes = [x for x in range(0, len(population))]
+                indexes.remove(population.index(path))
+                first_parent = takes_half(path)
+                second_parent = population[random.choice(indexes)]
+                for i in range(len(path)):
+                    if second_parent[i] not in first_parent:
+                        first_parent.append(second_parent[i])
+                new_path.append(first_parent) 
+            crossbreeding += new_path
+        
+        self.population.append(crossbreeding)
+    
 root = Population({0: (0, 0)}, 4)
 root.create_population(10)
+print(root.population)
+root.selection()
+print(root.population)
+root.crossbreeding()
+print(root.population)
